@@ -9,7 +9,7 @@ const FirstPage = () => {
 
     useEffect(() => {
         if (!ready) return;
-        send(JSON.stringify({ type: 'first' }));
+        send(JSON.stringify({ type: "first" }));
     }, [ready, send]);
 
     useEffect(() => {
@@ -21,7 +21,7 @@ const FirstPage = () => {
 
     return (
         <View style={styles.container}>
-           <Text>{user.username}</Text>
+           <Text>user: {user.username}</Text>
         </View>
     );
 };

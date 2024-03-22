@@ -12,7 +12,7 @@ export const AppProvider = ({ children }) => {
   const ws = useRef(null);
 
   const connect = () => {
-    const socket = new WebSocket("ws://192.168.2.18:8080");
+    const socket = new WebSocket("ws://192.168.1.108:8080");
 
     socket.onopen = () => setIsReady(true);
     socket.onclose = () => {
@@ -27,8 +27,6 @@ export const AppProvider = ({ children }) => {
   useEffect(() => {
     connect();
     // Uncomment dit niet graag. Scheelt een hele dag debuggen <3
-    
-
     return () => {
       ws.current.close();
     };
