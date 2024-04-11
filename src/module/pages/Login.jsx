@@ -1,19 +1,25 @@
 import { useContext, useEffect, useState } from 'react';
 import { Image, TextInput, StyleSheet, Text, View, Pressable } from 'react-native';
 import { AppContext } from '../AppContext';
-
+import { useNavigation } from "@react-navigation/native";
+import * as SecureStore from 'expo-secure-store';
 
 const LoginPage = () => {
     const [ready, msg, send] = useContext(AppContext)
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('')
+    const navigation = useNavigation();
 
     const login = () => {
+        if (username.length == 0 || password.length == 0) {
+            alert("gebruikersnaam of wachtwoord is leeg!");
+            return;
+        }
         if (!ready)
             return;
         send(
             JSON.stringify({
-                type: "Login",
+                type: "LOGIN",
                 user: {
                     username: username,
                     password: password
@@ -22,6 +28,23 @@ const LoginPage = () => {
         )
     }
 
+    useEffect(() => {
+        const response = JSON.parse(msg);
+        if (response?.type === "LOGIN") {
+            if (response?.success == true) {
+                // set LocalStorage
+                setSecureStorage(response?.user);
+                // natigate
+                navigation.navigate("Overview")
+            } else {
+                alert("gebruikers naam en/of wachtwoord incorrect")
+            }
+        }
+    }, [msg, navigation])
+
+    setSecureStorage = async (user) => { 
+        await SecureStore.setItemAsync("USER", JSON.stringify(user));
+    }
     return (
         <View>
             <View style={styles.imageDiv}>
@@ -44,8 +67,7 @@ const LoginPage = () => {
                     onChangeText={(text) => { setPassword(text) }}
                     value={password}
                 />
-                <Pressable onPress={login
-                } style={styles.loginButton}>
+                <Pressable onPress={() => login()} style={styles.loginButton}>
                     <Text style={styles.loginButtonText}>login</Text>
                 </Pressable>
             </View>
