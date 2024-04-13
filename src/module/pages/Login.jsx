@@ -42,7 +42,7 @@ const LoginPage = () => {
         }
     }, [msg, navigation])
 
-    setSecureStorage = async (user) => { 
+    setSecureStorage = async user => { 
         await SecureStore.setItemAsync("USER", JSON.stringify(user));
     }
     return (
