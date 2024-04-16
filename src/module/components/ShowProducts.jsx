@@ -1,8 +1,10 @@
+import { StyleSheet, Text, View, ScrollView } from 'react-native';
+
 const ShowProducts = ( products ) => {
 
     return (
         <>
-            <Text>producten?</Text>
+            <Text>{products}</Text>
         </>
     );
 }

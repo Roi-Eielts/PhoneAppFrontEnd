@@ -1,9 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { AppContext } from '../AppContext';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from "@react-navigation/native";
 import EmptyProductOverview from '../components/EmptyProductsOverview';
+import ShowProducts from '../components/ShowProducts';
+
 
 
 
@@ -12,16 +14,17 @@ const OverviewPage = () => {
     const [ready, msg, send] = useContext(AppContext);
     const navigation = useNavigation();
     const [products, setProducts] = useState([]);
+    const EmptyProduct = EmptyProductOverview();
+    const productsView = ShowProducts(products);
 
     useEffect(() => {
         getProducts();
-    })
+    }, [ready])
 
     getProducts = async () => {
         var result = JSON.parse(await SecureStore.getItemAsync('USER'));
         if (!ready)
             return;
-        console.log(result?.id)
         send(JSON.stringify({
             type: "GET_PRODUCTS",
             user: {
@@ -33,18 +36,30 @@ const OverviewPage = () => {
     useEffect(() => {
         const response = JSON.parse(msg);
         if (response?.type === "GET_PRODUCTS") {
-            setProducts(response?.products)
+            if (response?.products) {
+                setProducts(response?.products)
+            } else {
+                setProducts([])
+            }
         }
-    });
+    }, [ready]);
+    checkForProduct = () => {
+        if(products != undefined && products.length <= 1) {
+            return <ShowProducts products={products}></ShowProducts>
+        } else {
+            return <Text>Er zijn nog geen producten of er is iets fout gegaan</Text>
+        }
+    }
+
     return (
         <View style={Styles.main_div}>
             <View>
                 <Text style={Styles.banner}>Overzicht</Text>
             </View>
             <View>
-                {/* {products.length == 0 ? EmptyProductOverview : ShowProducts(products)} */}
-            </View>
-        </View>
+                { checkForProduct() }
+            </View >
+        </View >
     );
 };
 
