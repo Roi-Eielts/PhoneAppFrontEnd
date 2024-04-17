@@ -2,9 +2,6 @@ import { useContext, useEffect, useState, React } from 'react';
 import { StyleSheet, Text, ScrollView } from 'react-native';
 
 const ShowProducts = ({ products }) => {
-    useEffect(() => {
-        console.info(products)
-    })
 
     return (
         <ScrollView>

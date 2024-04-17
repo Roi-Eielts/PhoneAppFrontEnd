@@ -1,10 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { AppContext } from '../AppContext';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from "@react-navigation/native";
 import EmptyProductOverview from '../components/EmptyProductsOverview';
 import ShowProducts from '../components/ShowProducts';
+import { AntDesign } from '@expo/vector-icons';
 
 
 
@@ -44,13 +45,20 @@ const OverviewPage = () => {
         }
     }, [ready]);
 
+    const navigateToCreatePage = () => {
+        navigation.navigate("Create")
+    }
+
     return (
         <View style={Styles.main_div}>
             <View>
                 <Text style={Styles.banner}>Overzicht</Text>
+                <Pressable onPress={() => navigateToCreatePage()}>
+                <AntDesign name="pluscircle" size={15} color="black" />
+                </Pressable>
             </View>
             <View>
-                { products.length === 0 || products == undefined ? (<Text>Er zijn nog geen producten of er is iets fout gegaan</Text>)  : ( <ShowProducts products={products}/>)}
+                {products.length === 0 || products == undefined ? (<Text>Er zijn nog geen producten of er is iets fout gegaan</Text>) : (<ShowProducts products={products} />)}
             </View >
         </View >
     );
