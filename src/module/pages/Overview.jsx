@@ -43,13 +43,6 @@ const OverviewPage = () => {
             }
         }
     }, [ready]);
-    checkForProduct = () => {
-        if(products != undefined && products.length <= 1) {
-            return <ShowProducts products={products}></ShowProducts>
-        } else {
-            return <Text>Er zijn nog geen producten of er is iets fout gegaan</Text>
-        }
-    }
 
     return (
         <View style={Styles.main_div}>
@@ -57,7 +50,7 @@ const OverviewPage = () => {
                 <Text style={Styles.banner}>Overzicht</Text>
             </View>
             <View>
-                { checkForProduct() }
+                { products.length === 0 || products == undefined ? (<Text>Er zijn nog geen producten of er is iets fout gegaan</Text>)  : ( <ShowProducts products={products}/>)}
             </View >
         </View >
     );

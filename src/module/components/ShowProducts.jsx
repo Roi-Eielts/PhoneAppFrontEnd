@@ -1,12 +1,18 @@
-import { StyleSheet, Text, View, ScrollView } from 'react-native';
+import { useContext, useEffect, useState, React } from 'react';
+import { StyleSheet, Text, ScrollView } from 'react-native';
 
-const ShowProducts = ( products ) => {
+const ShowProducts = ({ products }) => {
+    useEffect(() => {
+        console.info(products)
+    })
 
     return (
-        <>
-            <Text>{products}</Text>
-        </>
+        <ScrollView>
+            {products && products.map((product, index) => (
+                <Text key={index}>{product.name}</Text>
+            ))}
+        </ScrollView>
     );
 }
 
-export default ShowProducts
+export default ShowProducts;
