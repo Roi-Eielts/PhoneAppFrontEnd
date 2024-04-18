@@ -56,6 +56,7 @@ const LoginPage = () => {
                 <TextInput
                     style={styles.inputStyling}
                     placeholder='Username'
+                    placeholderTextColor='grey'
                     onChangeText={(text) => { setUsername(text) }}
                     value={username}
                 />
@@ -63,6 +64,7 @@ const LoginPage = () => {
                 <TextInput
                     style={styles.inputStyling}
                     secureTextEntry={true}
+                    placeholderTextColor='grey'
                     placeholder='Password'
                     onChangeText={(text) => { setPassword(text) }}
                     value={password}
@@ -87,7 +89,7 @@ const styles = StyleSheet.create({
     },
     inputStyling: {
         fontSize: 25,
-        color: 'grey',
+        color: 'black',
         borderColor: '#d3d3d3',
         borderWidth: 2,
         width: 300,

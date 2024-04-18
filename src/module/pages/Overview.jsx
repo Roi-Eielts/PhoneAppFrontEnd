@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, ScrollView } from 'react-native';
 import { AppContext } from '../AppContext';
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from "@react-navigation/native";
@@ -15,14 +15,9 @@ const OverviewPage = () => {
     const [ready, msg, send] = useContext(AppContext);
     const navigation = useNavigation();
     const [products, setProducts] = useState([]);
-    const EmptyProduct = EmptyProductOverview();
-    const productsView = ShowProducts(products);
+    const [loading, setLoading] = useState(true)
 
-    useEffect(() => {
-        getProducts();
-    }, [ready])
-
-    getProducts = async () => {
+    const getProducts = async () => {
         var result = JSON.parse(await SecureStore.getItemAsync('USER'));
         if (!ready)
             return;
@@ -35,6 +30,10 @@ const OverviewPage = () => {
     }
 
     useEffect(() => {
+        getProducts();
+    }, [ready])
+
+    useEffect(() => {
         const response = JSON.parse(msg);
         if (response?.type === "GET_PRODUCTS") {
             if (response?.products) {
@@ -42,8 +41,10 @@ const OverviewPage = () => {
             } else {
                 setProducts([])
             }
+            console.table(loading)
+            setLoading(false);
         }
-    }, [ready]);
+    }, [msg]);
 
     const navigateToCreatePage = () => {
         navigation.navigate("Create")
@@ -54,12 +55,16 @@ const OverviewPage = () => {
             <View>
                 <Text style={Styles.banner}>Overzicht</Text>
                 <Pressable onPress={() => navigateToCreatePage()}>
-                <AntDesign name="pluscircle" size={15} color="black" />
+                    <AntDesign name="pluscircle" size={24} color="black" />
                 </Pressable>
             </View>
-            <View>
-                {products.length === 0 || products == undefined ? (<Text>Er zijn nog geen producten of er is iets fout gegaan</Text>) : (<ShowProducts products={products} />)}
-            </View >
+            <ScrollView>
+                {loading ? (
+                    <Text>Loading...</Text>
+                ) : (
+                        products && products.length >= 1 ? (<ShowProducts products={ products }/>) : (<Text>geen producten</Text>)
+                )}
+            </ScrollView>
         </View >
     );
 };
