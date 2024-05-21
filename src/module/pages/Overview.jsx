@@ -30,6 +30,8 @@ const OverviewPage = () => {
     }
 
     useEffect(() => {
+        if(!ready)
+            return;
         getProducts();
     }, [ready])
 
@@ -50,20 +52,26 @@ const OverviewPage = () => {
         navigation.navigate("Create")
     }
 
+    const renderView = () => {
+        if(loading) {
+            return <Text>Loading...</Text>;
+        } else if(products && products.length >= 1) {
+            return <ShowProducts products={ products }/>;
+        } else {
+            return <EmptyProductOverview/>;
+        }
+    }
+
     return (
         <View style={Styles.main_div}>
             <View>
                 <Text style={Styles.banner}>Overzicht</Text>
-                <Pressable onPress={() => navigateToCreatePage()}>
+                <Pressable style={ Styles.createProductButton } onPress={() => navigateToCreatePage()} onLongPress={ key => alert("deze knop lijd je naar het 'product toevoegen' pagina.")}>
                     <AntDesign name="pluscircle" size={24} color="black" />
                 </Pressable>
             </View>
             <ScrollView>
-                {loading ? (
-                    <Text>Loading...</Text>
-                ) : (
-                        products && products.length >= 1 ? (<ShowProducts products={ products }/>) : (<Text>geen producten</Text>)
-                )}
+                {renderView()}
             </ScrollView>
         </View >
     );
@@ -77,6 +85,10 @@ const Styles = StyleSheet.create({
         fontSize: 30,
         marginStart: 'auto',
         marginEnd: 'auto'
+    },
+    createProductButton: {
+        alignSelf: 'flex-end',
+        marginEnd: 10
     }
 })
 export default OverviewPage;

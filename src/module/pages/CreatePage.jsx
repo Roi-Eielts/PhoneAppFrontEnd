@@ -12,15 +12,23 @@ const CreateProduct = () => {
     const [name, setName] = useState('');
     const [barCode, setBarcode] = useState('');
     const [ammount, setAmmoumt] = useState('');
+    const [quantity, setQuantity] = useState('');
     const [typeOfProduct, setTypeOfProduct] = useState('');
-    const [user, setUser] = useState();
+    const [user, setUser] = useState(null);
     const navigation = useNavigation();
     const [products, setProducts] = useState([]);
 
+    // first run for getting user
     useEffect(() => {
+        if(!ready)
+            return;
         getUser();
-        getCompanyProducts();
     }, [ready])
+    //if user is there
+    useEffect(() => {
+        if(user)
+            getCompanyProducts();
+    }, [user])
 
     const getUser = async () => {
         setUser(JSON.parse(await SecureStore.getItemAsync('USER')));
@@ -55,6 +63,7 @@ const CreateProduct = () => {
                 },
                 product: {
                     name: name,
+                    quantity: quantity,
                     ammount: ammount,
                     type: typeOfProduct
                 }
@@ -64,10 +73,15 @@ const CreateProduct = () => {
 
     useEffect(() => {
         const response = JSON.parse(msg)
-        if (!ready)
+        if (!ready && !response)
             return;
         if (response?.type === "CREATE_PRODUCT") {
             alert("product aangemaakt");
+            setName(null);
+            setBarcode(null);
+            setAmmoumt(null);
+            setQuantity(null);
+            setTypeOfProduct(null);
             goToOverView();
         }
         if (response?.type === "GET_ALL_COMPANY_PRODUCTS") {
@@ -99,6 +113,14 @@ const CreateProduct = () => {
                 style={styles.inputField}
             />
             <TextInput
+                placeholder='Product aantal'
+                placeholderTextColor='grey'
+                keyboardType='numeric'
+                onChangeText={(text) => { setQuantity(text) }}
+                value={quantity}
+                style={styles.inputField}
+            />
+            <TextInput
                 placeholder='Product hoeveelheid'
                 placeholderTextColor='grey'
                 onChangeText={(text) => { setAmmoumt(text) }}
@@ -109,6 +131,7 @@ const CreateProduct = () => {
                 selectedValue={typeOfProduct}
                 onValueChange={type => setTypeOfProduct(type)}
                 style={styles.inputField}>
+                <Picker.Item label="select one" value="1" />
                 <Picker.Item label="Slobber" value="1" />
                 <Picker.Item label="Olie" value="0" />
                 <Picker.Item label="Voedsel" value="2" />

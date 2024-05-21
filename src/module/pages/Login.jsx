@@ -27,6 +27,9 @@ const LoginPage = () => {
             })
         )
     }
+    const setSecureStorage = async user => { 
+        await SecureStore.setItemAsync("USER", JSON.stringify(user));
+    }
 
     useEffect(() => {
         const response = JSON.parse(msg);
@@ -42,9 +45,7 @@ const LoginPage = () => {
         }
     }, [msg, navigation])
 
-    setSecureStorage = async user => { 
-        await SecureStore.setItemAsync("USER", JSON.stringify(user));
-    }
+
     return (
         <View>
             <View style={styles.imageDiv}>
