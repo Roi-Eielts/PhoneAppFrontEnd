@@ -52,15 +52,6 @@ const OverviewPage = () => {
         navigation.navigate("Create")
     }
 
-    const renderView = () => {
-        if(loading) {
-            return <Text>Loading...</Text>;
-        } else if(products && products.length >= 1) {
-            return <ShowProducts products={ products }/>;
-        } else {
-            return <EmptyProductOverview/>;
-        }
-    }
 
     return (
         <View style={Styles.main_div}>
@@ -71,7 +62,7 @@ const OverviewPage = () => {
                 </Pressable>
             </View>
             <ScrollView>
-                {renderView()}
+                {loading ? (<Text>Loading... </Text>) : products.length >= 1 ? (<ShowProducts products={ products }/> ): (<EmptyProductOverview/>)}
             </ScrollView>
         </View >
     );
