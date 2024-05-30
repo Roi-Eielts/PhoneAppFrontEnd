@@ -11,7 +11,7 @@ const CreateProduct = () => {
     const [ready, msg, send] = useContext(AppContext)
     const [name, setName] = useState('');
     const [barCode, setBarcode] = useState('');
-    const [ammount, setAmmoumt] = useState('');
+    const [contents, setcontents] = useState('');
     const [quantity, setQuantity] = useState('');
     const [typeOfProduct, setTypeOfProduct] = useState('');
     const [user, setUser] = useState(null);
@@ -45,7 +45,7 @@ const CreateProduct = () => {
         }));
     }
     const createTheProduct = () => {
-        if (name.length == 0 || ammount.length == 0)
+        if (name.length == 0 || contents.length == 0)
             return;
         if (!ready)
             return;
@@ -64,7 +64,7 @@ const CreateProduct = () => {
                 product: {
                     name: name,
                     quantity: quantity,
-                    ammount: ammount,
+                    contents: contents,
                     type: typeOfProduct
                 }
             })
@@ -79,7 +79,7 @@ const CreateProduct = () => {
             alert("product aangemaakt");
             setName(null);
             setBarcode(null);
-            setAmmoumt(null);
+            setcontents(null);
             setQuantity(null);
             setTypeOfProduct(null);
             goToOverView();
@@ -121,10 +121,10 @@ const CreateProduct = () => {
                 style={styles.inputField}
             />
             <TextInput
-                placeholder='Product hoeveelheid'
+                placeholder='Product inhoud'
                 placeholderTextColor='grey'
-                onChangeText={(text) => { setAmmoumt(text) }}
-                value={ammount}
+                onChangeText={(text) => { setcontents(text) }}
+                value={contents}
                 style={styles.inputField}
             />
             <Picker

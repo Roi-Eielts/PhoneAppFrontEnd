@@ -43,15 +43,16 @@ const OverviewPage = () => {
             } else {
                 setProducts([])
             }
-            console.table(loading)
             setLoading(false);
+        }
+        if(response?.type === "CREATE_PRODUCT") {
+            getProducts();
         }
     }, [msg]);
 
     const navigateToCreatePage = () => {
         navigation.navigate("Create")
     }
-
 
     return (
         <View style={Styles.main_div}>
@@ -62,7 +63,7 @@ const OverviewPage = () => {
                 </Pressable>
             </View>
             <ScrollView>
-                {loading ? (<Text>Loading... </Text>) : products.length >= 1 ? (<ShowProducts products={ products }/> ): (<EmptyProductOverview/>)}
+                {loading ? (<Text>Loading... </Text>) : products.length >= 1 ? ( <ShowProducts products={ products }/> ): (<EmptyProductOverview/>)}
             </ScrollView>
         </View >
     );
@@ -80,6 +81,29 @@ const Styles = StyleSheet.create({
     createProductButton: {
         alignSelf: 'flex-end',
         marginEnd: 10
+    },
+    container: {
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        flex: 1
+    },
+    table: {
+        width: '100%',
+        margin: 15
+    },
+    table_Head: {
+        paddingStart: '2%',
+        flexDirection: 'row',
+        backgroundColor: '#bebebe'
+    },
+    table_head_caption: {
+        fontSize: 18,
+        fontWeight: 'bold'
+    },
+    table_body: {
+        paddingStart: '2%',
+        flexDirection: 'row',
     }
 })
 export default OverviewPage;

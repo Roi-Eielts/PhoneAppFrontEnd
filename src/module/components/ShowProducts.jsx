@@ -9,7 +9,6 @@ const ShowProducts = ({ products }) => {
     const navigation = useNavigation();
 
     const navigateToSignleProduct = (id) => {
-        console.warn(id)
         navigation.navigate("SignleProduct", {productId: id})
     }
     return (
@@ -36,11 +35,11 @@ const ShowProducts = ({ products }) => {
                             <View style={{ width: '40%' }}>
                                 <Text style={Styles.table_data}>{product.quantity}</Text>
                             </View>
-                            <View style={{ width: '20%', flexDirection: 'row'}}>
-                                <Pressable style={Styles.createProductButton} onPress={() => navigateToSignleProduct(product.id)}>
+                            <View style={{ width: '20%', flexDirection: 'row', justifyContent: 'space-between', paddingStart: 5, paddingEnd: 10}}>
+                                <Pressable onPress={() => navigateToSignleProduct(product.id)}>
                                     <AntDesign name="eye" size={24} color="#0d6efd" />
                                 </Pressable>
-                                <Pressable style={Styles.createProductButton} >
+                                <Pressable>
                                     <AntDesign name="delete" size={24} color="red" />
                                 </Pressable>
                             </View>
@@ -48,17 +47,6 @@ const ShowProducts = ({ products }) => {
                     ))}
                 </ScrollView>
             </View>
-            {/* <ScrollView>
-            {products && products.map((product, index) => (
-                <View key={index} style={Styles.dataRow}>
-                    <Text style={Styles.dataRowText1}>{product.name}</Text>
-                    <Text>{product.ammount}</Text>
-                    <View>
-                        <Text>abc</Text>
-                    </View>
-                </View>
-                ))}
-            </ScrollView> */}
         </View>
     );
 }
