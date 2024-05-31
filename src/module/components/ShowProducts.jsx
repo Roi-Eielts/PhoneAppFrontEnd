@@ -2,11 +2,25 @@ import { useContext, useEffect, useState, React } from 'react';
 import { StyleSheet, Text, ScrollView, View, Pressable } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { AppContext } from '../AppContext';
 
 
 
 const ShowProducts = ({ products }) => {
     const navigation = useNavigation();
+    const [ready, msg, send] = useContext(AppContext);
+
+
+    const deleteProduct = (id) => {
+        if (!ready)
+            return;
+        send(JSON.stringify({
+            type: "DELETE_PRODUCT",
+            product: {
+                id: id
+            }
+        }));
+    }
 
     const navigateToSignleProduct = (id) => {
         navigation.navigate("SignleProduct", {productId: id})
@@ -39,7 +53,7 @@ const ShowProducts = ({ products }) => {
                                 <Pressable onPress={() => navigateToSignleProduct(product.id)}>
                                     <AntDesign name="eye" size={24} color="#0d6efd" />
                                 </Pressable>
-                                <Pressable>
+                                <Pressable onPress={() => deleteProduct(product.id) }>
                                     <AntDesign name="delete" size={24} color="red" />
                                 </Pressable>
                             </View>

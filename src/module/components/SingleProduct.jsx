@@ -31,6 +31,16 @@ const SignleProduct = ({ route }) => {
                 setQuantity(response?.product.quantity.toString())
             }
         }
+        if (response?.type === "SAVE_QUANTITY") {
+            send(JSON.stringify({
+                type: "LOAD_PRODUCT",
+                product: {
+                    id: productId
+                    }
+                })
+            )
+            alert("quantiteit is opgeslagen.")
+        }
     }, [msg]);
 
     const goToOverView = () => {
@@ -50,18 +60,30 @@ const SignleProduct = ({ route }) => {
         setQuantity(fieldQuantity.toString())
     }
 
+    const save = () => {
+        if (!ready)
+            return;
+        send(JSON.stringify({
+            type: "SAVE_QUANTITY",
+            product: {
+                id: product.id
+            },
+            quantity: quantity
+        }));
+    }
+
     return (
         <View style={Styles.main_div}>
             <View>
                 <Pressable onPress={() => goToOverView()} style={ Styles.back}>
                     <AntDesign name="leftcircle" size={24} color="black" />
                 </Pressable>
-                <Text style={Styles.banner}>product:  {product?.name}</Text>
+                <Text style={Styles.banner}>Product:  {product?.name}</Text>
             </View>
             <View style={Styles.second_inner_div}>
-                <Text style={Styles.label}>product naam: </Text>
+                <Text style={Styles.label}>Product naam: </Text>
                 <Text style={Styles.fields}>{product?.name}</Text>
-                <Text style={Styles.label}>aantal: </Text>
+                <Text style={Styles.label}>Aantal: </Text>
                 <TextInput 
                     keyboardType='numeric'
                     placeholder="Product aantal"
@@ -69,11 +91,11 @@ const SignleProduct = ({ route }) => {
                     onChangeText={(text) => { setQuantity(text) }}
                     value={quantity}
                     />
-                <Text style={Styles.label}>inhoud: </Text>
+                <Text style={Styles.label}>Inhoud: </Text>
                 <Text style={Styles.fields}>{product?.contents}</Text>
-                <Text style={Styles.label}>barcode: </Text>
+                <Text style={Styles.label}>Barcode: </Text>
                 <Text style={Styles.fields}>{product?.barcode}</Text>
-                <Text style={Styles.label}>soort product: </Text>
+                <Text style={Styles.label}>Soort product: </Text>
                 <Text style={[Styles.fields, Styles.productType]}>{product?.type}</Text>
             </View>
             <View style={[Styles.row, Styles.addOrRemove]}>
@@ -81,23 +103,26 @@ const SignleProduct = ({ route }) => {
                     <AntDesign name="minus" size={24} color="white" />
                 </Pressable>
                 <Pressable onPress={() => addOne()} style={ Styles.add}>
-                    <AntDesign name="plus" size={24} color="white" />
+                    <AntDesign name="plus" size={24} color="white"/>
                 </Pressable>
             </View>
             { product ? product.quantity != quantity ? (
-            <View>
-                <Pressable onPress={() => reset()} style={ Styles.back}>
-                    <Text>Reset</Text>
+            <View  style={[Styles.save_reset_row, Styles.reset_save]}>
+                <Pressable onPress={() => reset()} style={ [Styles.purple, Styles.resetButton] }>
+                    <Text style={ Styles.buttonRow }>Reset</Text>
                 </Pressable>
-                {/* <Pressable onPress={() => goToOverView()} style={ Styles.back}>
-                    <Text>Opslaan</Text>
-                </Pressable> */}
+                <Pressable  style={ Styles.saveButton } onPress={() => save()}>
+                    <Text style={ Styles.buttonRow }>Opslaan</Text>
+                </Pressable>
             </View>
             ): (<></>) : (<></>)}
         </View>
     );
 }
 const Styles = StyleSheet.create({
+    reset_save: { 
+        marginTop: 20
+    },
     back: {
         marginStart: 10
     },
@@ -105,25 +130,49 @@ const Styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
+    save_reset_row: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+    },
     addOrRemove: {
-        marginTop: 20,
+        marginTop: 250,
     },
     add: {
+        borderRadius: 5,
         marginRight: 'auto',
         backgroundColor: "#198754",
-        paddingLeft: 40,
-        paddingTop: 15,
-        paddingRight: 40,
-        paddingBottom: 15,
+        paddingLeft: 50,
+        paddingTop: 20,
+        paddingRight: 50,
+        paddingBottom: 20,
     },
     remove: {
+        borderRadius: 5,
         marginLeft: 'auto',
         marginRight: 40,
         backgroundColor: "#dc3545",
-        paddingLeft: 40,
-        paddingTop: 15,
-        paddingRight: 40,
-        paddingBottom: 15,
+        paddingLeft: 50,
+        paddingTop: 20,
+        paddingRight: 50,
+        paddingBottom: 20,
+    },
+    resetButton :{
+        marginRight: 40,
+        marginLeft: 'auto',
+        borderRadius: 5,
+        paddingLeft: 50,
+        paddingTop: 20,
+        paddingRight: 50,
+        paddingBottom: 20,
+    },
+    saveButton :{
+        marginRight: 'auto',
+        borderRadius: 5,
+        paddingLeft: 50,
+        paddingTop: 20,
+        paddingRight: 50,
+        paddingBottom: 20,
+        backgroundColor: '#0881B5'
     },
     main_div: {
         marginTop: 60,
@@ -131,7 +180,7 @@ const Styles = StyleSheet.create({
         paddingHorizontal: '5%'
     },
     second_inner_div: {
-        marginTop: '2%'
+        marginTop: 50
     },
     banner: {
         fontSize: 30,
@@ -149,7 +198,15 @@ const Styles = StyleSheet.create({
     },
     productType: {
         textTransform: 'capitalize',
-    }
+    },
+    purple: {
+        backgroundColor: "#68277E"
+    },
+    buttonRow: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        color: '#ffffff'
+    },
 });
 
 export default SignleProduct;

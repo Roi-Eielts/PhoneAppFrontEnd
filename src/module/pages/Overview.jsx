@@ -48,6 +48,12 @@ const OverviewPage = () => {
         if(response?.type === "CREATE_PRODUCT") {
             getProducts();
         }
+        if(response?.type === "SAVE_QUANTITY") {
+            getProducts();
+        }
+        if(response?.type === "DELETE_PRODUCT") {
+            getProducts();
+        }
     }, [msg]);
 
     const navigateToCreatePage = () => {

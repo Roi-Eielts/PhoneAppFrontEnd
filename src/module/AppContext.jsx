@@ -12,7 +12,7 @@ export const AppProvider = ({ children }) => {
   const ws = useRef(null);
 
   const connect = () => {
-    const socket = new WebSocket("ws://192.168.2.23:8080");
+    const socket = new WebSocket("ws://192.168.1.108:8080");
 
     socket.onopen = () => setIsReady(true);
     socket.onclose = () => {
