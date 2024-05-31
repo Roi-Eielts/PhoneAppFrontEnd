@@ -45,7 +45,7 @@ const CreateProduct = () => {
         }));
     }
     const createTheProduct = () => {
-        if (name.length == 0 || contents.length == 0)
+        if (name.length == 0 || contents.length == 0 || typeOfProduct == 0 )
             return;
         if (!ready)
             return;
@@ -131,7 +131,7 @@ const CreateProduct = () => {
                 selectedValue={typeOfProduct}
                 onValueChange={type => setTypeOfProduct(type)}
                 style={styles.inputField}>
-                <Picker.Item label="select one" value="1" />
+                <Picker.Item label="select one"/>
                 <Picker.Item label="Slobber" value="1" />
                 <Picker.Item label="Olie" value="0" />
                 <Picker.Item label="Voedsel" value="2" />
