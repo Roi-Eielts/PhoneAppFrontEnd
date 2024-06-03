@@ -7,10 +7,6 @@ import EmptyProductOverview from '../components/EmptyProductsOverview';
 import ShowProducts from '../components/ShowProducts';
 import { AntDesign } from '@expo/vector-icons';
 
-
-
-
-
 const OverviewPage = () => {
     const [ready, msg, send] = useContext(AppContext);
     const navigation = useNavigation();

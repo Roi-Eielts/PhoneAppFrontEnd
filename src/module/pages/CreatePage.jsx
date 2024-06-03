@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { AppContext } from "../AppContext";
-import { TextInput, View, Pressable, Text, StyleSheet } from "react-native";
+import { TextInput, View, Pressable, Text, StyleSheet, Alert } from "react-native";
 import { Picker } from "@react-native-picker/picker";
 import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from "@react-navigation/native";
@@ -18,13 +18,11 @@ const CreateProduct = () => {
     const navigation = useNavigation();
     const [products, setProducts] = useState([]);
 
-    // first run for getting user
     useEffect(() => {
         if(!ready)
             return;
         getUser();
     }, [ready])
-    //if user is there
     useEffect(() => {
         if(user)
             getCompanyProducts();
@@ -45,8 +43,12 @@ const CreateProduct = () => {
         }));
     }
     const createTheProduct = () => {
-        if (name.length == 0 || contents.length == 0 || typeOfProduct == 0 )
+        if (name.length == 0 || contents.length == 0 || typeOfProduct == undefined)
             return;
+        if(quantity <= -2147483647 || quantity >= 2147483647) {
+            Alert.alert('Opgelet!', "het Quantiteit nummer is te groot.\nHet limiet is vanaf -2147483647 tot 2147483647")
+            return;
+        }
         if (!ready)
             return;
         for (let product in products) {
@@ -132,9 +134,9 @@ const CreateProduct = () => {
                 onValueChange={type => setTypeOfProduct(type)}
                 style={styles.inputField}>
                 <Picker.Item label="select one"/>
-                <Picker.Item label="Slobber" value="1" />
-                <Picker.Item label="Olie" value="0" />
-                <Picker.Item label="Voedsel" value="2" />
+                <Picker.Item label="Slobber" value="SLOB" />
+                <Picker.Item label="Olie" value="OIL" />
+                <Picker.Item label="Voedsel" value="FOOD" />
             </Picker>
             <Pressable onPress={() => createTheProduct()} style={styles.createButton}>
                 <Text style={styles.createButtonText}>aanmaken</Text>
@@ -173,8 +175,6 @@ const styles = StyleSheet.create({
     },
     back: {
         marginStart: 10
-        // marginEnd: 'auto',
-        // marginStart: 'auto'
     },
     header: {
         flexDirection: 'row',

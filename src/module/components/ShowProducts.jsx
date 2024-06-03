@@ -34,7 +34,7 @@ const ShowProducts = ({ products }) => {
                         <Text style={Styles.table_head_caption}>Product naam</Text>
                     </View>
                     <View style={{ width: '40%' }}>
-                        <Text style={Styles.table_head_caption}>Hoeveelheid</Text>
+                        <Text style={Styles.table_head_caption}>Quantiteit</Text>
                     </View>
                     <View style={{ width: '20%' }}>
                         <Text style={Styles.table_head_caption}>Acties</Text>
@@ -43,10 +43,10 @@ const ShowProducts = ({ products }) => {
                 <ScrollView>
                     {products && products.map((product, index) => (
                         <View key={index} style={Styles.table_body}>
-                            <View style={{ width: '40%' }}>
+                            <View style={{ width: '40%'}}>
                                 <Text style={Styles.table_data}>{product.name}</Text>
                             </View>
-                            <View style={{ width: '40%' }}>
+                            <View style={{ width: '40%'}}>
                                 <Text style={Styles.table_data}>{product.quantity}</Text>
                             </View>
                             <View style={{ width: '20%', flexDirection: 'row', justifyContent: 'space-between', paddingStart: 5, paddingEnd: 10}}>
@@ -81,12 +81,18 @@ const Styles = StyleSheet.create({
         backgroundColor: '#bebebe'
     },
     table_head_caption: {
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold'
     },
     table_body: {
+        marginTop: 2,
+        marginBottom: 2,
         paddingStart: '2%',
         flexDirection: 'row',
+        borderBottomWidth: 0.5
+    },
+    table_data: {
+        fontSize: 15
     }
 
 });

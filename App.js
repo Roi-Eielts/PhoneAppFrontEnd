@@ -7,6 +7,7 @@ import LoginPage from "./src/module/pages/Login"
 import OverviewPage from "./src/module/pages/Overview";
 import CreateProduct from "./src/module/pages/CreatePage";
 import SignleProduct from "./src/module/components/SingleProduct";
+import EditProduct from "./src/module/pages/EditProduct";
 
 const Stack = createNativeStackNavigator();
 
@@ -22,6 +23,7 @@ const App = () => {
           <Stack.Screen name="Overview" component={ OverviewPage}></Stack.Screen>
           <Stack.Screen name="Create" component={ CreateProduct }></Stack.Screen>
           <Stack.Screen name="SignleProduct" component={ SignleProduct }></Stack.Screen>
+          <Stack.Screen name="EditProduct" component={ EditProduct }></Stack.Screen>
           {/* <Stack.Screen name="FirstPage" component={FirstPage}></Stack.Screen> */}
         </Stack.Navigator>
       </AppProvider>
