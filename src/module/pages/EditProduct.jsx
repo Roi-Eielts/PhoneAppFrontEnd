@@ -45,8 +45,16 @@ const EditProduct = ({ route }) => {
                 setTypeOfProduct(response?.product.type)
             }
         }
-        if (response?.type === "LOAD_PRODUCT_TO_EDIT") {
+        if (response?.type === "SAVE_PRODUCT") {
             Alert.alert("product aangepast: " + productName, "het product is aangemaakt en kan nu niet meer terug gezet woorden naar de oude data");
+            if (!ready)
+                return;
+            send(JSON.stringify({
+                type: "LOAD_PRODUCT_TO_EDIT",
+                product: {
+                    id: productId
+                }
+            }));
         }
 
     }, [msg]);
@@ -79,7 +87,11 @@ const EditProduct = ({ route }) => {
     }
 
     const reset = () => {
-
+        setproductName(product.name)
+        setproductQuantity(product.quantity.toString())
+        setproductBarcode(product.barcode?.toString())
+        setproductContent(product.contents)
+        setTypeOfProduct(product.type)
     }
 
     return (

@@ -50,6 +50,9 @@ const OverviewPage = () => {
         if(response?.type === "DELETE_PRODUCT") {
             getProducts();
         }
+        if(response?.type === "SAVE_PRODUCT") {
+            getProducts();
+        }
     }, [msg]);
 
     const navigateToCreatePage = () => {
