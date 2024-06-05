@@ -87,7 +87,8 @@ const CreateProduct = () => {
                     name: name,
                     quantity: quantity,
                     contents: contents,
-                    type: typeOfProduct
+                    type: typeOfProduct,
+                    barcode: barCode
                 }
             })
         )
