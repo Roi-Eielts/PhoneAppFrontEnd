@@ -109,7 +109,7 @@ const SignleProduct = ({ route }) => {
                 <Text style={Styles.label}>Barcode: </Text>
                 <Text style={Styles.fields}>{product?.barcode}</Text>
                 <Text style={Styles.label}>Soort product: </Text>
-                <Text style={[Styles.fields, Styles.productType]}>{product?.type  === "OIL"? "olie" : product?.type === "FOOD" ? "voedsel" : "slobber"}</Text>
+                <Text style={[Styles.fields, Styles.productType]}>{product?.type  ===   "OIL" ? "olie" : product?.type === 'FOOD' ? "voedsel" : "slobber"}</Text>
             </View>
             <View style={[Styles.row, Styles.addOrRemove]}>
                 <Pressable onPress={() => removeOne()} style={ Styles.remove}>

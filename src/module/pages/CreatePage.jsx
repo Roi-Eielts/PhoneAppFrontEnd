@@ -6,6 +6,9 @@ import * as SecureStore from 'expo-secure-store';
 import { useNavigation } from "@react-navigation/native";
 import { AntDesign } from '@expo/vector-icons';
 
+// camera: 
+import { Camera } from 'expo-camera';
+
 
 const CreateProduct = () => {
     const [ready, msg, send] = useContext(AppContext)
@@ -17,7 +20,18 @@ const CreateProduct = () => {
     const [user, setUser] = useState(null);
     const navigation = useNavigation();
     const [products, setProducts] = useState([]);
+    const [permission, setPermission] = useState(null);
+    const [scanned, setScanned] = useState(false);
+    const [showCamera, setShowCamera] = useState(false);
 
+
+
+    const requestPermission = async () => {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        setPermission(status === 'granted');
+    };
+
+    
     useEffect(() => {
         if(!ready)
             return;
@@ -42,6 +56,12 @@ const CreateProduct = () => {
             }
         }));
     }
+
+    const handleBarCodeScanned = ({ type, data }) => {
+        setBarcode(data);
+        setShowCamera(false)
+    };
+
     const createTheProduct = () => {
         if (name.length == 0 || contents.length == 0 || typeOfProduct == undefined)
             return;
@@ -67,7 +87,8 @@ const CreateProduct = () => {
                     name: name,
                     quantity: quantity,
                     contents: contents,
-                    type: typeOfProduct
+                    type: typeOfProduct,
+                    barcode: barCode
                 }
             })
         )
@@ -122,6 +143,15 @@ const CreateProduct = () => {
                 value={quantity}
                 style={styles.inputField}
             />
+                {barCode != '' ? (
+                    <TextInput
+                        placeholder='Product barcode'
+                        placeholderTextColor='grey'
+                        value={barCode}
+                        style={styles.inputField}
+                        readOnly={true}
+                    />
+                ): (<></>)}
             <TextInput
                 placeholder='Product inhoud'
                 placeholderTextColor='grey'
@@ -141,6 +171,20 @@ const CreateProduct = () => {
             <Pressable onPress={() => createTheProduct()} style={styles.createButton}>
                 <Text style={styles.createButtonText}>aanmaken</Text>
             </Pressable>
+            <Pressable onPress={() => {setShowCamera(!showCamera) + requestPermission()}} style={ showCamera ? styles.camButton_close: styles.camButton_open}>
+                <Text style={styles.createButtonText}>{showCamera ? "Close cam" : "Open cam"}</Text>
+            </Pressable>
+            {showCamera == true ? (
+                <View style={{display: barCode !=  '' ? 'none' : 'block'}}>
+                    <Camera style={{width: '100%', height: '100%'}} facing={'back'} 
+                        barcodeScannerSettings={{
+                            barcodeTypes: ["qr"],
+                        }}
+                        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+                    ></Camera>
+                </View>
+            ) : (<></>)}
+            
         </View>
 
     );
@@ -167,9 +211,17 @@ const styles = StyleSheet.create({
         paddingStart: 10
     },
     createButtonText: {
-        fontSize: 20
+        fontSize: 20,
+        color: 'white'
     },
     createButton: {
+        backgroundColor: '#198754',
+        paddingLeft: 20,
+        paddingTop: 10,
+        paddingRight: 20,
+        paddingBottom: 10,
+        marginBottom: 10,
+        borderRadius: 5,
         marginEnd: 'auto',
         marginStart: 'auto'
     },
@@ -179,7 +231,30 @@ const styles = StyleSheet.create({
     header: {
         flexDirection: 'row',
         flexWrap: 'wrap'
-    }
+    },
+    camButton_open: {
+        backgroundColor: 'grey',
+        paddingLeft: 20,
+        paddingTop: 10,
+        paddingRight: 20,
+        paddingBottom: 10,
+        marginBottom: 10,
+        borderRadius: 5,
+        marginEnd: 'auto',
+        marginStart: 'auto'
+    },
+    camButton_close: {
+        backgroundColor: 'red',
+        paddingLeft: 20,
+        paddingTop: 10,
+        paddingRight: 20,
+        paddingBottom: 10,
+        marginBottom: 10,
+        borderRadius: 5,
+        marginEnd: 'auto',
+        marginStart: 'auto'
+    },
+
 })
 
 export default CreateProduct;
