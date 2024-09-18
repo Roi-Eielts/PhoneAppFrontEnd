@@ -1,4 +1,4 @@
-# voordat je het project kan runnen moet je de volgende commands runnen:
+# Before you can run the project, you need to execute the following commands:
 
 ```
 npm install expo
@@ -10,11 +10,4 @@ npm install @react-navigation/native @react-navigation/native-stack
 npx expo install react-native-screens react-native-safe-area-context
 npm install @react-native-picker/picker --save
 npx expo install expo-camera
-```
-
-**voor in het web**
-
-let op! niet alle features werken in het web
-```
-npx expo install react-native-web react-dom @expo/metro-runtime
 ```
